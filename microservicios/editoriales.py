@@ -41,3 +41,4 @@ def delete_editorial(item_id: int):
             del db_editoriales[index]
             return {"mensaje": "Editorial eliminada"}
     raise HTTPException(status_code=404, detail="Editorial no encontrada")
+    
