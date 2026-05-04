@@ -40,4 +40,4 @@ def delete_pais(item_id: int):
             del db_paises[index]
             return {"mensaje": "País eliminado"}
     raise HTTPException(status_code=404, detail="País no encontrado")
-  
+    
