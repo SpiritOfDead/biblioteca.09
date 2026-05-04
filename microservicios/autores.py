@@ -1,7 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import uvicorn
 
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
 
 class Autor(BaseModel):
     id: int
@@ -19,7 +20,7 @@ def get_autor(item_id: int):
     for item in db_autores:
         if item.id == item_id:
             return item
-    raise HTTPException(status_code=404, detail="Autor no encontrado")
+    raise HTTPException(status_code=404, detail="No encontrado")
 
 @app.post("/autores")
 def post_autor(item: Autor):
@@ -27,17 +28,21 @@ def post_autor(item: Autor):
     return item
 
 @app.put("/autores/{item_id}")
-def put_autor(item_id: int, item_actualizado: Autor):
-    for index, item in enumerate(db_autores):
+def put_autor(item_id: int, item_act: Autor):
+    for i, item in enumerate(db_autores):
         if item.id == item_id:
-            db_autores[index] = item_actualizado
-            return item_actualizado
-    raise HTTPException(status_code=404, detail="Autor no encontrado")
+            db_autores[i] = item_act
+            return item_act
+    raise HTTPException(status_code=404, detail="No encontrado")
 
 @app.delete("/autores/{item_id}")
 def delete_autor(item_id: int):
-    for index, item in enumerate(db_autores):
+    for i, item in enumerate(db_autores):
         if item.id == item_id:
-            del db_autores[index]
-            return {"mensaje": "Autor eliminado"}
-    raise HTTPException(status_code=404, detail="Autor no encontrado")
+            del db_autores[i]
+            return {"msj": "Eliminado"}
+    raise HTTPException(status_code=404, detail="No encontrado")
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)
+    
